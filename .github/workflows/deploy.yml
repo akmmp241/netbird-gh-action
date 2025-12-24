@@ -13,9 +13,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install NetBird
-        run: |
-          curl -fsSL https://pkgs.netbird.io/install.sh | sudo bash
+      # - name: Install NetBird
+      #   run: |
+      #     curl -fsSL https://pkgs.netbird.io/install.sh | sudo bash
 
       - name: Netbird Connect
         uses: Alemiz112/netbird-connect@v1
