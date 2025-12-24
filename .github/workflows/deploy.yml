@@ -36,7 +36,7 @@ jobs:
 
       - name: Deploy (git pull)
         run: |
-          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} '
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -i ~/.ssh/id_rsa akmmp@100.76.254.197 '
             set -e
             cd ${{ secrets.SERVER_PATH }}
             git pull origin main
