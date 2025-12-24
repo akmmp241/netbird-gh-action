@@ -17,17 +17,23 @@ jobs:
         run: |
           curl -fsSL https://pkgs.netbird.io/install.sh | sudo bash
 
-      - name: Connect to NetBird
-        run: |
-          sudo netbird up --setup-key ${{ secrets.NETBIRD_SETUP_KEY }}
-          for i in {1..10}; do
-            if sudo netbird status | grep -q "Connected"; then
-              echo "NetBird connected successfully"
-              break
-            fi
-            echo "Waiting for NetBird..."
-            sleep 5
-          done
+      # - name: Connect to NetBird
+      #   run: |
+      #     sudo netbird up --setup-key ${{ secrets.NETBIRD_SETUP_KEY }}
+      #     for i in {1..10}; do
+      #       if sudo netbird status | grep -q "Connected"; then
+      #         echo "NetBird connected successfully"
+      #         break
+      #       fi
+      #       echo "Waiting for NetBird..."
+      #       sleep 5
+      #     done
+      
+      name: Netbird Connect
+        id: netbird
+        uses: Alemiz112/netbird-connect@v1.0.1
+        with:
+          setup-key: ${{ secrets.NETBIRD_SETUP_KEY }}
 
       - name: Setup SSH
         run: |
