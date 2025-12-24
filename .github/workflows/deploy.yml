@@ -1,0 +1,38 @@
+name: Deploy from Netbird network
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install NetBird
+        run: |
+          curl -fsSL https://pkgs.netbird.io/install.sh | sudo bash
+
+      - name: Connect to NetBird
+        run: |
+          sudo netbird up --setup-key ${{ secrets.NETBIRD_SETUP_KEY }}
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
+      - name: Deploy (git pull)
+        run: |
+          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+            set -e
+            cd ${{ secrets.SERVER_PATH }}
+            git pull origin main
+          EOF
+
