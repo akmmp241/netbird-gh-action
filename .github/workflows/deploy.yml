@@ -21,7 +21,6 @@ jobs:
         uses: Alemiz112/netbird-connect@v1
         with:
           setup-key: ${{ secrets.NETBIRD_SETUP_KEY }}
-          management-url: 'https://https://app.netbird.io'
 
       - name: Wait for Netbird Route
         run: |
