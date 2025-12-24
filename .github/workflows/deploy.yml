@@ -29,12 +29,13 @@ jobs:
           sudo netbird status
       - name: Setup SSH
         run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa && chmod 600 id_rsa
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
       - name: Deploy (git pull)
         run: |
-          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -i id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} '
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} '
             set -e
             cd ${{ secrets.SERVER_PATH }}
             git pull origin main
