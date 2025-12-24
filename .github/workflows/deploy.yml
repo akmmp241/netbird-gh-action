@@ -23,20 +23,12 @@ jobs:
 
       - name: Setup SSH
         run: |
-          mkdir -p ~/.ssh
-
-          cat << 'EOF' > ~/.ssh/id_rsa
-          ${{ secrets.SSH_PRIVATE_KEY }}
-          EOF
-
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa && chmod 600 id_rsa
 
       - name: Deploy (git pull)
         run: |
-          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} '
             set -e
             cd ${{ secrets.SERVER_PATH }}
             git pull origin main
-          EOF
-
+          '
